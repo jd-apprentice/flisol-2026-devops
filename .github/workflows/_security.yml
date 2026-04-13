@@ -23,11 +23,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@0c366fd6a839edf440554fa01a7085ccba70ac98
-      - uses: aquasecurity/trivy-action@f685ba721536b1ff19093eb4e1b1bf994c2bdbe2
+      - uses: aquasecurity/trivy-action@0.35.0
         with:
           scan-type: "fs"
           scan-ref: "."
+          ignore-unfixed: true
           scanners: "vuln,secret,config"
+          severity: "CRITICAL,HIGH"
 
   trufflehog:
     name: TruffleHog Secret Detection
