@@ -1,5 +1,8 @@
 name: Security Scanning
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 on:
   workflow_call:
 
@@ -24,7 +27,7 @@ jobs:
         with:
           scan-type: "fs"
           scan-ref: "."
-          args: "--scanners vuln,secret,config"
+          scanners: "vuln,secret,config"
 
   trufflehog:
     name: TruffleHog Secret Detection
