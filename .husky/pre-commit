@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
 
 bun audit --audit-level=high
+bun run lint
 bun run build

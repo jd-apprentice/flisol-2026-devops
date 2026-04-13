@@ -12,9 +12,12 @@
     "build:binary": "bun build --compile --outfile=dist/flisol ./src/index.ts",
     "test": "bun test",
     "dev": "bun run src/index.ts",
-    "prepare": "husky"
+    "prepare": "husky",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write ."
   },
   "devDependencies": {
+    "@biomejs/biome": "^2.4.11",
     "bun-types": "^1.1.0",
     "husky": "^9.1.7"
   }
