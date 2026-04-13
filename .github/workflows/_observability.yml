@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@0c366fd6a839edf440554fa01a7085ccba70ac98
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@460a830f7c2bcbae2afc1fa5635b5c2c2c3dc47f
         with:
           node-version: ${{ inputs.node-version }}
       - name: Install observability dependencies
