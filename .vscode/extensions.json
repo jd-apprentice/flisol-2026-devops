@@ -1,0 +1,7 @@
+{
+  "recommendations": [
+    "aquasecurity.trivy-vscode",
+    "returntocorp.semgrep",
+    "usernamehw.errorlens",
+  ],
+}
