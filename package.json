@@ -1,0 +1,21 @@
+{
+  "name": "flisol-cli",
+  "version": "1.0.0",
+  "description": "FLISoL 2026 CLI Tool",
+  "type": "module",
+  "main": "src/index.ts",
+  "bin": {
+    "flisol": "dist/flisol"
+  },
+  "scripts": {
+    "build": "bun build --compile --outfile=dist/flisol ./src/index.ts",
+    "build:binary": "bun build --compile --outfile=dist/flisol ./src/index.ts",
+    "test": "bun test",
+    "dev": "bun run src/index.ts",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "bun-types": "^1.1.0",
+    "husky": "^9.1.7"
+  }
+}

@@ -1,0 +1,36 @@
+name: Security Scanning
+
+on:
+  workflow_call:
+
+jobs:
+  semgrep:
+    name: Semgrep Security Scan
+    runs-on: ubuntu-latest
+    container:
+      image: returntocorp/semgrep:latest
+    steps:
+      - uses: actions/checkout@0c366fd6a839edf440554fa01a7085ccba70ac98
+      - name: Run Semgrep scan
+        run: semgrep --config=auto --json --output=semgrep-results.json .
+
+  trivy:
+    name: Trivy Vulnerability Scanner
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@0c366fd6a839edf440554fa01a7085ccba70ac98
+      - uses: aquasecurity/trivy-action@f685ba721536b1ff19093eb4e1b1bf994c2bdbe2
+
+  trufflehog:
+    name: TruffleHog Secret Detection
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@0c366fd6a839edf440554fa01a7085ccba70ac98
+        with:
+          fetch-depth: "0"
+      - uses: trufflesecurity/trufflehog@580628bb9d5455140899afe2cb981ff5640bf399
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        if: always()
+        with:
+          name: trufflehog-results
+          path: trufflehog-results.json

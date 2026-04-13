@@ -1,0 +1,63 @@
+name: Observability Setup
+
+on:
+  workflow_call:
+    inputs:
+      node-version:
+        description: Node version
+        required: false
+        default: "24"
+      metrics-port:
+        description: Metrics endpoint port
+        required: false
+        default: "3000"
+
+jobs:
+  observability:
+    name: Observability
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@0c366fd6a839edf440554fa01a7085ccba70ac98
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ inputs.node-version }}
+      - name: Install observability dependencies
+        run: |
+          npm install @opentelemetry/api @opentelemetry/sdk-node @opentelemetry/auto-instrumentations-node --save-dev
+      - name: Generate OpenTelemetry config
+        run: |
+          cat > otel-config.js << 'EOF'
+          const { NodeSDK } = require('@opentelemetry/sdk-node');
+          const { getNodeAutoInstrumentations } = require('@opentelemetry/auto-instrumentations-node');
+
+          const sdk = new NodeSDK({
+            instrumentations: [getNodeAutoInstrumentations()]
+          });
+
+          sdk.start();
+
+          process.on('SIGTERM', () => {
+            sdk.shutdown()
+              .then(() => console.log('Tracing terminated'))
+              .catch((error) => console.log('Error terminating tracing', error))
+              .finally(() => process.exit(0));
+          });
+          EOF
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: observability-config
+          path: otel-config.js
+      - name: Generate Prometheus config
+        run: |
+          cat > prometheus.yml << 'EOF'
+          global:
+            scrape_interval: 15s
+          scrape_configs:
+            - job_name: 'app'
+              static_configs:
+                - targets: ['localhost:${{ inputs.metrics-port }}']
+          EOF
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: prometheus-config
+          path: prometheus.yml
