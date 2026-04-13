@@ -8,10 +8,6 @@ on:
   pull_request:
     branches: [master]
 
-env:
-  BUN_VERSION: "1.3.12"
-  NODE_VERSION: "24"
-
 jobs:
   security:
     name: Security
@@ -22,7 +18,7 @@ jobs:
     name: Quality
     uses: ./.github/workflows/_quality.yml
     with:
-      bun-version: ${{ env.BUN_VERSION }}
+      bun-version: "1.3.12"
     secrets: inherit
 
   build:
@@ -30,7 +26,7 @@ jobs:
     needs: [security, quality]
     uses: ./.github/workflows/_build.yml
     with:
-      bun-version: ${{ env.BUN_VERSION }}
+      bun-version: "1.3.12"
     secrets: inherit
 
   release:
@@ -45,5 +41,5 @@ jobs:
     needs: [build]
     uses: ./.github/workflows/_observability.yml
     with:
-      node-version: ${{ env.NODE_VERSION }}
+      node-version: "24"
     secrets: inherit
