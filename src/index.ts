@@ -29,7 +29,7 @@ export function calculate(
 			if (b === 0) throw new Error("Cannot divide by zero");
 			return a / b;
 		default:
-			throw new Error(`Unknown operation: ${operation}`);
+			throw new Error(`Unknown operation: ${operation as string}`);
 	}
 }
 
@@ -38,19 +38,19 @@ const command = Bun.argv[2];
 
 switch (command) {
 	case "greet": {
-		const name = Bun.argv[3] || "Mundo";
+		const name = Bun.argv[3] ?? "Mundo";
 		console.log(greet(name));
 		break;
 	}
 	case "farewell": {
-		const name = Bun.argv[3] || "Mundo";
+		const name = Bun.argv[3] ?? "Mundo";
 		console.log(farewell(name));
 		break;
 	}
 	case "calculate": {
-		const a = parseFloat(Bun.argv[3] || "0");
-		const b = parseFloat(Bun.argv[4] || "0");
-		const op = (Bun.argv[5] || "add") as
+		const a = parseFloat(Bun.argv[3] ?? "0");
+		const b = parseFloat(Bun.argv[4] ?? "0");
+		const op = (Bun.argv[5] ?? "add") as
 			| "add"
 			| "subtract"
 			| "multiply"

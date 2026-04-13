@@ -23,6 +23,8 @@ jobs:
       - uses: aquasecurity/trivy-action@f685ba721536b1ff19093eb4e1b1bf994c2bdbe2
         with:
           scan-type: "fs"
+          scan-ref: "."
+          args: "--scanners vuln,secret,config"
 
   trufflehog:
     name: TruffleHog Secret Detection
