@@ -4,10 +4,12 @@ on:
   workflow_call:
     inputs:
       output-name:
+        type: string
         description: Output binary name
         required: false
         default: "flisol"
       release-notes:
+        type: string
         description: Custom release notes path
         required: false
         default: ""

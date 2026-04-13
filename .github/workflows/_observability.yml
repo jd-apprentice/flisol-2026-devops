@@ -5,10 +5,12 @@ on:
     inputs:
       node-version:
         description: Node version
+        type: string
         required: false
         default: "24"
       metrics-port:
         description: Metrics endpoint port
+        type: string
         required: false
         default: "3000"
 
