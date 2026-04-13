@@ -1,71 +1,99 @@
-# Ciclo DevOps adaptado a Software Libre 🚀
+# FLISoL 2026 CLI
 
-Este proyecto es una guía educativa diseñada para demostrar cómo implementar un flujo de trabajo **DevOps profesional** utilizando exclusivamente herramientas de **Software Libre**. 
+Herramienta CLI desarrollada con **Bun** para el FLISoL 2026. Este proyecto demuestra un flujo de trabajo DevOps profesional utilizando herramientas de Software Libre.
 
-## 💡 La Idea del Proyecto
+## ℹ️ Sobre el Proyecto
 
-El proyecto propone un modelo de "Ciclo de Vida de Desarrollo" dividido en dos grandes etapas: el **Flujo Local** (el entorno del desarrollador) y el **Flujo Remoto** (la infraestructura de integración y despliegue).
+Este proyecto sirve como ejemplo práctico de cómo implementar un ciclo DevOps completo en un proyecto TypeScript/Bun. El código en sí es una CLI simple, pero el verdadero valor está en la infraestructura DevOps que la acompaña.
 
-La premisa es: **"Detectar el error lo más cerca posible del código"**. Si un error puede ser detectado por un linter en el IDE o un hook de pre-commit, no debería llegar nunca al servidor de CI/CD.
+## 📦 Instalación
 
----
-
-## 🗺️ Estructura del Flujo de Trabajo
-
-### 1. Flujo Local (The Inner Loop) 💻
-Se enfoca en la consistencia y la calidad temprana.
-- **Entorno de Desarrollo:** Uso de templates de configuración, extensiones recomendadas y linters para que todo el equipo escriba código bajo el mismo estándar.
-- **Hooks de Git (vía Husky):** 
-    - `pre-commit`: Ejecuta auditorías de seguridad (`bun audit`), linting con Biome y verificación de compilación.
-    - `pre-push`: Validaciones de integración y escaneo de seguridad básico para evitar subir dependencias vulnerables.
-
-### 2. Flujo Remoto (The Outer Loop) ☁️
-Se enfoca en la seguridad, la gobernanza y la calidad final.
-- **Gestión de Pull Requests (PR):** 
-    - Bloqueo de `force-push`.
-    - Revisiones obligatorias (`Code Review`) mediante `CODEOWNERS`.
-    - Uso de plantillas de PR para asegurar que se documente el "qué" y el "por qué".
-- **Gates de Calidad (CI Pipeline):**
-    - **SAST (Static Analysis Security Testing):** Análisis de código en busca de fallos de seguridad.
-    - **SCA (Software Composition Analysis):** Análisis de dependencias vulnerables.
-    - **Secret Scanning:** Detección de claves o tokens expuestos accidentalmente.
-    - **Linters & Tests:** Ejecución de la suite completa de pruebas (Unit, Integration, E2E).
-
----
-
-## 🛠️ Matriz de Herramientas Recomendadas
-
-El proyecto sugiere el uso de las siguientes herramientas de software libre:
-
-| Etapa | Herramienta | Propósito |
-| :--- | :--- | :--- |
-| **Local** | `pre-commit` | Orquestador de hooks agnóstico al lenguaje. |
-| **Local** | `Husky` | Hooks de Git específicos para ecosistema JS. |
-| **Local** | `ESLint`, `Biome`, `Clippy` | Linters para consistencia de código. |
-| **Remoto** | `Semgrep` | Análisis SAST, SCA y detección de secretos. |
-| **Remoto** | `Trivy` | Escaneo de vulnerabilidades en imágenes y FS. |
-| **Remoto** | `Trufflehog` | Especialista en búsqueda de secretos. |
-| **Remoto** | `Bearer` | Análisis SAST avanzado. |
-
----
-
-## 📂 Estructura del Repositorio
-
-Para fines educativos, el repositorio está organizado de la siguiente manera:
-
-```text
-.
-├── .github/                # Configuración de flujos remotos (CI/CD)
-│   └── workflows/          # Pipelines de GitHub Actions con SAST, SCA y Tests
-├── .husky/                 # Configuración de hooks de Git activos (Linter, Audit, Build)
-├── docs/                   # Documentación técnica y material de apoyo (PDFs)
-├── src/                    # Código de ejemplo para aplicar las herramientas
-└── .pre-commit.yaml        # Referencia educativa: cómo se configuraría con el framework pre-commit
+```bash
+bun install
+bun run build
 ```
 
-## 🎓 Cómo utilizar este proyecto para aprender
+## 💻 Uso
 
-1. **Explora la carpeta `docs/`**: Lee el material teórico sobre el ciclo DevOps.
-2. **Configura el entorno local**: Observa cómo Husky ejecuta automáticamente los linters y auditorías al hacer commit. Revisa `.pre-commit.yaml` para aprender cómo se haría lo mismo usando el framework `pre-commit`.
-3. **Sube un cambio**: Crea una rama, haz un commit y abre un Pull Request para ver cómo actúan los scanners remotos en la pestaña de "Actions".
-4. **Analiza los reportes**: Revisa los resultados de `Semgrep` o `Trivy` y trata de corregir las vulnerabilidades encontradas.
+```bash
+bun run dev
+bun run build
+
+# Ejecutar la CLI (después de compilar)
+./dist/flisol greet [nombre]
+./dist/flisol farewell [nombre]
+./dist/flisol calculate <a> <b> [operación]
+./dist/flisol version
+```
+
+### Comandos disponibles
+
+| Comando | Descripción |
+|---------|-------------|
+| `greet [nombre]` | Saluda a alguien (default: Mundo) |
+| `farewell [nombre]` | Se despide de alguien |
+| `calculate <a> <b> [op]` | Calcula operaciones básicas |
+| `version` | Muestra la versión |
+
+### Operaciones para `calculate`
+
+- `add` (default)
+- `subtract`
+- `multiply`
+- `divide`
+
+## 🧪 Commands de Desarrollo
+
+```bash
+bun run dev        
+bun run build      
+bun run test       
+bun run lint       
+bun run lint:fix   
+bun audit --audit-level=high
+```
+
+## 🛠️ Pipeline DevOps
+
+### Git Hooks (Husky)
+
+- **pre-commit**: `bun audit` → `bun run lint` → `bun run build`
+- **pre-push**: `bun run test`
+
+### CI/CD (GitHub Actions)
+
+El pipeline se ejecuta en orden:
+1. **Security** - Auditoría de dependencias y análisis SAST
+2. **Quality** - Linting y verificación de tipos
+3. **Build** - Compilación y release
+4. **Release** - Publicación de artefactos
+5. **Observability** - Métricas y monitoreo
+
+## 📂 Estructura del Proyecto
+
+```
+.
+├── .github/workflows/   
+├── .husky/              
+├── src/                 
+│   ├── index.ts         
+│   └── cli.test.ts      
+├── dist/                
+├── biome.json           
+├── tsconfig.json       
+└── Dockerfile           
+```
+
+## 🎓 Aprende DevOps con Este Proyecto
+
+Este repo demuestra:
+
+1. **Calidad local**: Hooks que detectan errores antes de commitear
+2. **Seguridad**: Auditorías y análisis automático
+3. **CI/CD**: Pipeline completo con gates de calidad
+4. **TypeScript moderno**: Tipado estrictocon Bun
+5. **Software Libre**: Solo herramientas open-source
+
+## 📝 Licencia
+
+MIT
