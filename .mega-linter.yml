@@ -1,0 +1,3 @@
+# MegaLinter configuration to only run TypeScript scans
+ENABLE_LINTERS:
+  - TYPESCRIPT_STANDARD

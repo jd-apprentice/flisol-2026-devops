@@ -29,7 +29,9 @@ jobs:
       - uses: actions/checkout@0c366fd6a839edf440554fa01a7085ccba70ac98
         with:
           fetch-depth: "0"
-      - uses: trufflesecurity/trufflehog@580628bb9d5455140899afe2cb981ff5640bf399
+      - name: Run TruffleHog
+        run: |
+          docker run --rm -v $(pwd):/cwd -w /cwd ghcr.io/trufflesecurity/trufflehog:latest git file:///cwd --json > trufflehog-results.json
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         if: always()
         with:
