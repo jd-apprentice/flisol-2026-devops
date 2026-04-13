@@ -46,7 +46,6 @@ El proyecto sugiere el uso de las siguientes herramientas de software libre:
 | **Remoto** | `Trivy` | Escaneo de vulnerabilidades en imágenes y FS. |
 | **Remoto** | `Trufflehog` | Especialista en búsqueda de secretos. |
 | **Remoto** | `Bearer` | Análisis SAST avanzado. |
-| **Remoto** | `MegaLint` | Super-linter que agrupa múltiples herramientas. |
 
 ---
 
